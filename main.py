@@ -1,8 +1,8 @@
 from cvdupdate.cvdupdate import CVDUpdate
 import threading, logging, os, sys, time, http.server, socketserver, pathlib
 
-HTTP_PORT = os.getenv("HTTP_PORT", 8000)
-UPDATE_EVERY_N_HOURS = os.getenv("UPDATE_EVERY_N_HOURS", 24)
+HTTP_PORT = int(os.getenv("HTTP_PORT", 8000))
+UPDATE_EVERY_N_HOURS = int(os.getenv("UPDATE_EVERY_N_HOURS", 24))
 DATA_DIR = os.getenv("DATA_DIR", "/data")
 
 logging.basicConfig(
