@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: clamav-mirror
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clamav-mirror
+  namespace: clamav-mirror
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: clamav-mirror
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clamav-mirror
+  namespace: clamav-mirror
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clamav-mirror
+  template:
+    metadata:
+      labels:
+        app: clamav-mirror
+    spec:
+      containers:
+        - name: clamav-mirror
+          image: YOU_REPOSITORY/clamav-mirror:latest
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          ports:
+            - containerPort: 80
+          env:
+            - name: HTTP_PORT
+              value: "80"
+            - name: UPDATE_EVERY_N_HOURS
+              value: "24"
+            - name: DATA_DIR
+              value: "/data"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: clamav-mirror-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: clamav-mirror-data
+  namespace: clamav-mirror
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
