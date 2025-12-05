@@ -22,7 +22,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            docker.wiseflow.io/k8s/${{ github.event.repository.name }}
+            097788601444.dkr.ecr.eu-west-1.amazonaws.com/k8s/${{ github.event.repository.name }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -37,7 +37,7 @@ jobs:
       - name: Login to Harbor 
         uses: docker/login-action@v2
         with:
-          registry: docker.wiseflow.io
+          registry: 097788601444.dkr.ecr.eu-west-1.amazonaws.com
           username: ${{ secrets.HARBOR_USERNAME }}
           password: ${{ secrets.HARBOR_TOKEN }}
       - name: Build and push
