@@ -15,7 +15,7 @@ on:
 jobs:
   Lint:
     name: lint
-    runs-on: self-hosted
+    runs-on: default
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
